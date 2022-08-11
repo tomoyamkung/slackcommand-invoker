@@ -32,6 +32,8 @@ Resources:
             Method: POST
             RestApiId:
               Ref: ApiGatewayApi
+    Metadata:
+      BuildMethod: makefile
   EventInvokeConfig:
     Type: AWS::Lambda::EventInvokeConfig
     Properties:
