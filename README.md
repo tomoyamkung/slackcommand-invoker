@@ -75,6 +75,65 @@ The `--guided` option should be specified for the first deployment; the samconfi
 ➜  sam deploy --profile PROFILE
 ```
 
+## 開発
+
+パッケージや VirtualEnv の管理に Pipenv を、ユニットテストや Lint チェックの実行に tox を使用している。
+
+ユニットテストの実行や Lint チェックを実行する場合は `pipenv shell` として仮想環境にログインする。
+
+```sh
+➜  pipenv shell
+Launching subshell in virtual environment...
+ . /path/to/.local/share/virtualenvs/slackcommand-invoker-2cy1skFo/bin/activate
+```
+
+ユニットテストだけを実行する場合は `tox -e py39` を実行する。
+
+```sh
+➜  tox -e py39
+py39 installed: attrs==22.1.0,boto3==1.24.49,botocore==1.27.49,iniconfig==1.1.1,jmespath==1.0.1,packaging==21.3,pluggy==1.0.0,py==1.11.0,pyparsing==3.0.9,pytest==7.1.2,python-dateutil==2.8.2,s3transfer==0.6.0,six==1.16.0,tomli==2.0.1,urllib3==1.26.11
+py39 run-test-pre: PYTHONHASHSEED='492914414'
+py39 run-test: commands[0] | pytest -rsfp
+============================================================== test session starts ===============================================================
+platform darwin -- Python 3.9.12, pytest-7.1.2, pluggy-1.0.0
+cachedir: .tox/py39/.pytest_cache
+rootdir: /path/to/slackcommand-invoker
+collected 4 items
+
+tests/test_lambda_function.py ....                                                                                                         [100%]
+
+============================================================ short test summary info =============================================================
+PASSED tests/test_lambda_function.py::test_parse_params[None-None]
+PASSED tests/test_lambda_function.py::test_parse_params[-None]
+PASSED tests/test_lambda_function.py::test_parse_params[text=a-expected2]
+PASSED tests/test_lambda_function.py::test_parse_params[text=a b-expected3]
+=============================================================== 4 passed in 0.14s ================================================================
+____________________________________________________________________ summary _____________________________________________________________________
+  py39: commands succeeded
+  congratulations :)
+```
+
+Lint チェックだけを実行する場合は `tox -e lint` を実行する。
+
+```sh
+➜  tox -e lint
+lint installed: black==22.6.0,click==8.1.3,flake8==5.0.4,flake8-blind-except==0.2.1,flake8-docstrings==1.6.0,flake8-import-order==0.18.1,isort==5.10.1,mccabe==0.7.0,mypy==0.971,mypy-extensions==0.4.3,pathspec==0.9.0,platformdirs==2.5.2,pycodestyle==2.9.1,pydocstyle==6.1.1,pyflakes==2.5.0,snowballstemmer==2.2.0,tomli==2.0.1,typing_extensions==4.3.0
+lint run-test-pre: PYTHONHASHSEED='2466430279'
+lint run-test: commands[0] | isort .
+Skipped 4 files
+lint run-test: commands[1] | black .
+All done! ✨ 🍰 ✨
+4 files left unchanged.
+lint run-test: commands[2] | flake8 .
+lint run-test: commands[3] | mypy .
+Success: no issues found in 4 source files
+____________________________________________________________________ summary _____________________________________________________________________
+  lint: commands succeeded
+  congratulations :)
+```
+
+ユニットテストも Lint チェックも実行したい場合は `tox` とする。
+
 ## 備考
 
 ### Slack のスラッシュコマンドを実行すると dispatch_failed となる事象の対応
