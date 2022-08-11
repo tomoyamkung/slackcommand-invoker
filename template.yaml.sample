@@ -19,7 +19,7 @@ Resources:
         Variables:
           LAMBDA_FUNCTION_NAME: "xxx"  # TBD
       FunctionName: xxx  # TBD
-      Handler: function.lambda_handler
+      Handler: lambda_function.lambda_handler
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.9
       Architectures:
